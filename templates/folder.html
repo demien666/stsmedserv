@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <table id="folders" class="table table-striped">
+    <thead>
+      <tr>
+        <th>Folder Name</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for folder in folders %}
+        <tr>
+          <td>{{ folder.name }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <table id="files" class="table table-striped">
+    <thead>
+      <tr>
+        <th>File Name</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for file in files %}
+        <tr>
+          <td> <a href={{ file.path }}> {{ file.name }} </a> </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>  
+
+{% endblock %}
