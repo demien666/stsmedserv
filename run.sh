@@ -1,1 +1,1 @@
-flask --app hello run
+flask --app stsmedserv run --host=0.0.0.0
