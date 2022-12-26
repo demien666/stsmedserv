@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2> {{path}} </h2>
+  <table id="folders" class="table table-striped">
+    <thead>
+      <tr>
+        <th>Folders:</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for folder in folders %}
+        <tr>
+          <td> 
+                <img src="{{url_for('static', filename=folder.real_path)}}/poster.jpg" style="max-height: 200px; max-width: 200px;"/>
+                <a href={{ folder.uri }}> {{ folder.name }} </a> 
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <table id="files" class="table table-striped">
+    <thead>
+      <tr>
+        <th>Videos:</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for file in files %}
+        <tr>
+          <td> <a href={{ file.uri }}> {{ file.name }} </a> </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>  
+
+{% endblock %}
