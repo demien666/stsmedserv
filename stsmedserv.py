@@ -8,7 +8,7 @@ config = configparser.ConfigParser()
 config.read('stsmedserv.ini')
 
 URI_PATH_SEP = "->"
-URI_SPACE = "___"
+URI_SPACE = "%20"
 PATH_SEP = "/"
 BASE_PATH = config["main"]["base_path"]
 VID_EXT = [".avi", ".mkv", ".mp4"]
@@ -23,6 +23,8 @@ class FileInfo:
 
     def __lt__(self, other):
         return self.name < other.name
+
+GLOBAL_FILES: List[FileInfo] = []       
 
 def uri_to_path(uri: str) -> str:
     return uri.replace(URI_PATH_SEP, PATH_SEP).strip().replace(URI_SPACE, " ")
@@ -59,7 +61,9 @@ def get_folders_and_files(dir_path: str) -> Tuple[List[FileInfo], List[FileInfo]
             file_info.uri = "../folder/" + path_to_uri(local_path)
             folders.append(file_info)
     folders.sort()
-    files.sort()        
+    files.sort()
+    global GLOBAL_FILES
+    GLOBAL_FILES = files
     return folders, files         
 
 @app.route("/")
@@ -69,8 +73,22 @@ def hello_world():
 @app.route("/play/<uri>")
 def play(uri):
     path = uri_to_path(uri)
-    #print(path)
-    return render_template('video.html', video_path=path)
+    print(f"URI: {uri}" )
+    print(f"Path: {path}" )
+
+    files = GLOBAL_FILES
+    index = 0
+    i = 0
+    for f in files:
+        f.real_path = uri_to_path(f.uri.replace("../play/",""))
+        f.uri = url_for('static', filename=f.real_path)
+        # print(f"{path} VS {f.real_path}")
+        if path in f.real_path:
+            index = i
+        i = i+1
+    #print(f"Index: {index}")    
+
+    return render_template('video.html', video_path=path, files=files, index=index)
 
 @app.route("/folder/<uri>")
 def folder(uri=""):
@@ -82,6 +100,8 @@ def folder(uri=""):
 
 def main():
     print("hello!")
+    folder("Downloads->Test->Dragon")
+    play("Downloads->Test->Dragon->Jedcy%20smokw%20Dziewi%20wiatw%20S02E03pl%20-%20CDA.mp4")
     
 
 if __name__ == "__main__":

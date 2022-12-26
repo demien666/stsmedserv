@@ -2,24 +2,63 @@
 
 {% block content %}
 
-    <h2>Playing {{ video_path }}</h2>
-<!--
+
     <style>
         video {
-            height: 80%;
-            width: 80%;
-            object-fit: fill; 
-            position: absolute;
+            height: 100%;
+            width: 100%;
         }
     </style>
--->
 
-    <video controls width="640" height="480" autoplay>
+
+    <video id="video" controls width="640" height="480" autoplay>
         <source
             src="{{url_for('static', filename=video_path)}}" 
             type="video/mp4"
         >
         Your browser does not support the video tag.
     </video>
+
+    <select id="fileSelectList" class="form-select" size="10" aria-label="size 3 select example" disabled>
+        {% for file in files %}
+        <option value={{ loop.index0 }}>{{ file.name }}</option>
+        {% endfor %}
+    </select>
+
+    <script>
+        let idx = {{ index |tojson }}
+        console.log("idx=" + idx)
+        document.getElementById('fileSelectList')[idx].selected="selected"
+        video = document.getElementsByTagName('video')[0]
+        const filesList = {{ files |tojson }}
+        //console.log(filesList)
+
+        next = () => {
+            idx = idx + 1
+            if (idx>=filesList.length) {
+                idx = 0
+            }
+            play()
+
+        }
+        prev = () => {
+            idx = idx - 1
+            if (idx<0) {
+                idx = filesList.length-1
+            }
+            play()
+        }
+        play = () => {
+            console.log("new idx=" + idx)
+            document.getElementById('fileSelectList')[idx].selected="selected"
+            const playPath = filesList[idx].uri
+            console.log("playPath: " + playPath)
+            video.src = playPath
+            video.load()
+        }
+        video.addEventListener('ended', next, false)
+    </script>
+    <button onclick="prev()" type="button" class="btn btn-primary">prev</button>   
+    <button onclick="next()" type="button" class="btn btn-primary">next</button>
 
 {% endblock %}
