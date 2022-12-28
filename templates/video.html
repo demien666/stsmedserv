@@ -5,11 +5,13 @@
 
     <style>
         video {
-            height: 100%;
-            width: 100%;
+            height: 50%;
+            width: 50%;
         }
     </style>
 
+    <a href=../folder/{{ folder_uri }} class="btn btn-primary">Back</a>
+    <h3>{{ video_path }}</h3>
 
     <video id="video" controls width="640" height="480" autoplay>
         <source
@@ -18,12 +20,16 @@
         >
         Your browser does not support the video tag.
     </video>
-
+    <br/>
+    <button onclick="prev()" type="button" class="btn btn-primary">Prev</button>   
+    <button onclick="next()" type="button" class="btn btn-primary">Next</button>
+    <div class="w-50 p-3">
     <select id="fileSelectList" class="form-select" size="10" aria-label="size 3 select example" disabled>
         {% for file in files %}
         <option value={{ loop.index0 }}>{{ file.name }}</option>
         {% endfor %}
     </select>
+    </div>
 
     <script>
         let idx = {{ index |tojson }}
@@ -58,7 +64,5 @@
         }
         video.addEventListener('ended', next, false)
     </script>
-    <button onclick="prev()" type="button" class="btn btn-primary">prev</button>   
-    <button onclick="next()" type="button" class="btn btn-primary">next</button>
 
 {% endblock %}

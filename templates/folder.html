@@ -1,7 +1,12 @@
 {% extends "base.html" %}
 
 {% block content %}
+<a href="/" class="btn btn-primary">Home</a>
+{% if back_uri is not none %} 
+<a href={{ back_uri }} class="btn btn-primary">Back</a>
+{% endif %}
 <h2> {{path}} </h2>
+
   <table id="folders" class="table table-bordered">
     <tbody>
       {% for group in groups %}
@@ -21,11 +26,6 @@
   </table>
 
   <table id="files" class="table table-striped">
-    <thead>
-      <tr>
-        <th>Videos:</th>
-      </tr>
-    </thead>
     <tbody>
       {% for file in files %}
         <tr>
