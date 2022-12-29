@@ -12,7 +12,7 @@ URI_SPACE = "%20"
 PATH_SEP = "/"
 BASE_PATH = config["main"]["base_path"]
 ROOT_FOLDER_FILTER = config["main"].get("root_folder_filter", None)
-VID_EXT = [".avi", ".mkv", ".mp4"]
+VID_EXT = [".avi", ".mkv", ".mp4", ".m4v"]
 
 app = Flask(__name__, static_folder=BASE_PATH)
 
