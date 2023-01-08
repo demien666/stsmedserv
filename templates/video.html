@@ -11,7 +11,8 @@
     </style>
 
     <a href=../folder/{{ folder_uri }} class="btn btn-primary">Back</a>
-    <h3>{{ video_path }}</h3>
+    <h3 id="video_path">{{ video_path }}</h3>
+    <h3 id="file_name">It should be file name here</h3>
 
     <video id="video" controls width="640" height="480" autoplay>
         <source
@@ -59,10 +60,17 @@
             document.getElementById('fileSelectList')[idx].selected="selected"
             const playPath = filesList[idx].uri
             console.log("playPath: " + playPath)
+
+            var e = document.getElementById("fileSelectList");
+            var value = e.value;
+            var text = e.options[e.selectedIndex].text;
+            document.getElementById('file_name').innerHTML = text;
+            
             video.src = playPath
             video.load()
         }
         video.addEventListener('ended', next, false)
+        play()
     </script>
 
 {% endblock %}

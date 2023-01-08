@@ -131,7 +131,7 @@ def play(uri):
     # print(f"Index: {index}")
 
     return render_template(
-        "video.html", video_path=path, files=files, index=index, folder_uri=folder_uri
+        "video.html", video_path=folder, files=files, index=index, folder_uri=folder_uri
     )
 
 
